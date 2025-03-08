@@ -7,3 +7,9 @@ data class ApiResponse(
     @SerializedName("error") val error: Int,
     @SerializedName("data") val data: List<EduStatEntity>
 )
+
+data class ApiResponseId(
+    @SerializedName("message") val message: String,
+    @SerializedName("error") val error: Int,
+    @SerializedName("data") val data: EduStatEntity
+)

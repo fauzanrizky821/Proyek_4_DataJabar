@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.gson.Gson
 import com.proyek4.datajabar.data.api.ApiService
 import com.proyek4.datajabar.data.model.ApiResponse
+import com.proyek4.datajabar.data.model.EduStatEntity
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -32,6 +33,23 @@ class EduStatRepository(private val apiService: ApiService) {
 
             if (response.isSuccessful) {
                 response.body()
+            } else {
+                Log.e("EduStatRepository", "Error: ${response.code()} - ${response.message()}")
+                null
+            }
+        } catch (e: Exception) {
+            Log.e("EduStatRepository", "Exception: ${e.message}")
+            null
+        }
+    }
+
+    suspend fun getEduStatById(id: Int): EduStatEntity? {
+        return try {
+
+            val response = apiService.getEduStatById(id)
+
+            if (response.isSuccessful) {
+                response.body()?.data
             } else {
                 Log.e("EduStatRepository", "Error: ${response.code()} - ${response.message()}")
                 null

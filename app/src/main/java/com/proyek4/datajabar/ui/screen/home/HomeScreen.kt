@@ -22,13 +22,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.proyek4.datajabar.ui.components.EduStatCard
 import com.proyek4.datajabar.ui.components.FilterBar
 import com.proyek4.datajabar.ui.components.SearchBar
 import com.proyek4.datajabar.utils.Constant
 
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel = viewModel()) {
+fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), navController: NavController) {
     var searchQuery by remember { mutableStateOf("") }
     var selectedCity by remember { mutableStateOf<String?>(null) }
     var selectedYear by remember { mutableStateOf<String?>(null) }
@@ -76,7 +77,9 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel()) {
                         namaKabupatenKota = item.namaKabupatenKota,
                         lamaSekolah = item.lamaSekolah,
                         tahun = item.tahun,
-                        onClick = {}
+                        onClick = {
+                            navController.navigate("detail/${item.id}")
+                        }
                     )
                 }
             }
