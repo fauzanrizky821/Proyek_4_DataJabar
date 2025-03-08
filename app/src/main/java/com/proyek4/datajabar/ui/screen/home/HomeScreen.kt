@@ -7,13 +7,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 //noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.Card
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.CircularProgressIndicator
 //noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.OutlinedTextField
 //noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -25,30 +22,49 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.proyek4.datajabar.ui.theme.Typography
+import com.proyek4.datajabar.ui.components.EduStatCard
+import com.proyek4.datajabar.ui.components.FilterBar
+import com.proyek4.datajabar.ui.components.SearchBar
+import com.proyek4.datajabar.utils.Constant
 
 @Composable
 fun HomeScreen(homeViewModel: HomeViewModel = viewModel()) {
     var searchQuery by remember { mutableStateOf("") }
+    var selectedCity by remember { mutableStateOf<String?>(null) }
+    var selectedYear by remember { mutableStateOf<String?>(null) }
 
     val eduStat by homeViewModel.eduStat.collectAsState()
     val isLoading by homeViewModel.isLoading.collectAsState()
 
-
-    LaunchedEffect(searchQuery) {
-        homeViewModel.fetchEduStat(searchQuery.ifEmpty { null })
+    LaunchedEffect(searchQuery, selectedCity, selectedYear) {
+        homeViewModel.fetchEduStat(
+            searchQuery.ifEmpty { null },
+            selectedCity,
+            selectedYear
+        )
     }
 
     Column (
         modifier = Modifier.fillMaxSize().padding(16.dp),
     ){
-        OutlinedTextField(
-            value = searchQuery,
-            onValueChange = { searchQuery = it },
-            label = { Text("Cari Kabupaten/Kota") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp)
+        SearchBar(
+            query = searchQuery,
+            onQueryChange = { searchQuery = it },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        FilterBar(
+            selectedCity = selectedCity,
+            onCityChange = { selectedCity = it },
+            selectedYear = selectedYear,
+            onYearChange = { selectedYear = it },
+            cityOptions = Constant().cityOptions,
+            yearOptions = Constant().yearOptions,
+            onRefresh = {
+                selectedCity = null
+                selectedYear = null
+                searchQuery = ""
+            }
         )
 
         if (isLoading) {
@@ -56,23 +72,12 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel()) {
         } else {
             LazyColumn {
                 items(eduStat) { item ->
-                    Card (
-                        modifier = Modifier.fillMaxSize().padding(16.dp),
-                        elevation = 4.dp
-                    ) {
-                        Column (
-                            modifier = Modifier.padding(16.dp)
-                        ) {
-                            Text(
-                                text = "Nama Kabupaten/Kota: ${item.namaKabupatenKota}",
-                                style = Typography.bodyMedium
-                            )
-                            Text(
-                                text = "Lama Sekolah: ${item.lamaSekolah}",
-                                style = Typography.bodyMedium
-                            )
-                        }
-                    }
+                    EduStatCard(
+                        namaKabupatenKota = item.namaKabupatenKota,
+                        lamaSekolah = item.lamaSekolah,
+                        tahun = item.tahun,
+                        onClick = {}
+                    )
                 }
             }
         }

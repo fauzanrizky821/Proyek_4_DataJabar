@@ -64,6 +64,7 @@ dependencies {
     // Networking - Retrofit & Gson
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
 
     // Coroutines
     implementation(libs.kotlinx.coroutines.core)

@@ -3,7 +3,6 @@ package com.proyek4.datajabar.ui.screen.home
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.proyek4.datajabar.data.api.ApiClient
 import com.proyek4.datajabar.data.model.EduStatEntity
 import com.proyek4.datajabar.data.repository.EduStatRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,13 +19,13 @@ class HomeViewModel : ViewModel() {
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage = _errorMessage.asStateFlow()
 
-    fun fetchEduStat(searchQuery: String? = null) {
+    fun fetchEduStat(searchQuery: String? = null, city: String? = null, year: String? = null) {
         viewModelScope.launch {
             _isLoading.value = true
             _errorMessage.value = null
 
             try {
-                val response = EduStatRepository(ApiClient.apiService).getEduStat(searchQuery)
+                val response = EduStatRepository(ApiClient.apiService).getEduStat(searchQuery, city, year)
                 Log.d("HomeViewModel", "Response: $response")
 
                 if (response != null) {
