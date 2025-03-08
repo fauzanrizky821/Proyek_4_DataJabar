@@ -13,7 +13,6 @@ fun BottomBar(navController: NavController) {
     val screens = listOf(
         BottomBarScreen.Home,
         BottomBarScreen.Profile,
-        BottomBarScreen.Settings
     )
 
     BottomNavigation(

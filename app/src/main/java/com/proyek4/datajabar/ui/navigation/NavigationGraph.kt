@@ -22,7 +22,6 @@ fun NavigationGraph(
     ) {
         composable(BottomBarScreen.Home.route) { HomeScreen(navController = navController) }
         composable(BottomBarScreen.Profile.route) { ProfileScreen() }
-        composable(BottomBarScreen.Settings.route) { SettingScreen() }
         composable("detail/{id}") { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id")?.toIntOrNull()
             if (id != null) {

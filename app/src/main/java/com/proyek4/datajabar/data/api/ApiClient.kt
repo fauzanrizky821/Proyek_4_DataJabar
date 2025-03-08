@@ -9,13 +9,12 @@ import com.proyek4.datajabar.data.api.ApiService
 object ApiClient {
     private const val BASE_URL = "https://data.jabarprov.go.id/api-backend/bigdata/bps/"
 
-    // Menyiapkan logging interceptor untuk mencatat request dan response
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY // Bisa juga LEVEL.HEADERS jika ingin log header saja
+        level = HttpLoggingInterceptor.Level.BODY
     }
 
     private val okHttpClient = OkHttpClient.Builder()
-        .addInterceptor(loggingInterceptor) // Menambahkan interceptor ke OkHttpClient
+        .addInterceptor(loggingInterceptor)
         .build()
 
     private val gson: Gson = GsonBuilder()
@@ -25,7 +24,7 @@ object ApiClient {
     val apiService: ApiService by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(okHttpClient) // Gunakan OkHttpClient yang sudah dikonfigurasi dengan logging
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService::class.java)

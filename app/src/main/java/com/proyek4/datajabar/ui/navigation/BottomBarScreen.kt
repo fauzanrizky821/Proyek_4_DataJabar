@@ -13,5 +13,4 @@ sealed class BottomBarScreen (
 ) {
     object Home : BottomBarScreen("home", "Home", Icons.Filled.Home)
     object Profile : BottomBarScreen("profile", "Profile", Icons.Filled.Person)
-    object Settings : BottomBarScreen("settings", "Settings", Icons.Filled.Settings)
 }
